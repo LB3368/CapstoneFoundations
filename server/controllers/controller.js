@@ -1,17 +1,7 @@
 require('dotenv').config()
 const { Todo } = require('../models/Todo')
 const { Category } = require('../models/Category')
-//const { CONNECTION_STRING } = process.env
-//const Sequelize = require('sequelize')
 
-/*const sequelize = new Sequelize(CONNECTION_STRING, {
-    dialect: 'postgres',
-    dialectOptions: {
-        ssl: {
-            rejectUnauthorized: false
-        }
-    }
-})*/
 
 const getAllTodos = async (req, res) => {
     try {
@@ -49,9 +39,13 @@ const updateTodo = async (req, res) => {
             todo.completed = completed
             await todo.save()
             if (CategoryId) {
-                const category = await Category.findByPk(CategoryId)
-                if (category) {
-                    await todo.setCategory(category)
+                const cat1 = await Category.findByPk(CategoryId)
+                if (cat1) {
+                    await todo.setCategory(cat1)
+                }
+                const cat2 = await Category.findByPk(CategoryId)
+                if (cat2) {
+                    await todo.setCategory(cat2)
                 }
             }
             res.send(todo)
