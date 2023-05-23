@@ -66,61 +66,13 @@ app.get('/todos/:id', async (req, res) => {
 
 //Add new todo
 app.post('/todos', todos.addTodo);
-app.post('/todos', async (req, res) => {
-  const { text } = req.body;
-
-  if (text.trim() !== '') {
-    try {
-        const newTodo = await Todo.create({
-            text,
-            completed: false,
-        })
-        res.status(200).send(newTodo)
-    } catch (error) {
-        console.error('Error adding new todo:', error)
-        res.status(500).send({ error: 'Failed to add new todo'})
-    }
-    
-    } else {
-        res.status(400).send({ error: 'Text cannot be empty'})
-    }
-})
 
 // updating todo
 app.put("/todos/:id", todos.updateTodo);
-app.put("/todos/:id", async (req, res) => {
-  const id = parseInt(req.params.id);
-  const { completed } = req.body;
-
-  try {
-    const todo = await Todo.findByPk(id);
-
-    if (todo) {
-      await todo.update({ completed });
-      res.send(todo);
-    } else {
-      res.status(400).send({ error: "Todo not found" });
-    }
-  } catch (error) {
-    console.error("Error updating todo:", error);
-    res.status(500).send({ error: "Failed to update todo" });
-  }
-});
 
 // Delete a todo
 app.delete("/todos/:id", todos.deletedTodo);
-app.delete("/todos/:id", (req, res) => {
-  const id = parseInt(req.params.id);
 
-  const index = todos.findIndex((todos) => todos.id === id);
-
-  if (index !== -1) {
-    const deletedTodo = todos.splice(index, 1)[0];
-    res.send(deletedTodo);
-  } else {
-    res.status(400).send({ error: "Todo not found" });
-  }
-});
 
 app.listen(SERVER_PORT, () => {
   console.log(`running on port ${SERVER_PORT}`);

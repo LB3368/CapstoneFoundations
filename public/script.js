@@ -1,11 +1,226 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const todoList = document.getElementById('todo-list');
+  const todoForm = document.getElementById('add-todo-form');
+  let colorIndex = 0;
+
+  function getRandomColor() {
+    const colors = ['#FFC0CB', '#FFD700', '#00FFFF', '#90EE90', '#EE82EE', '#FFA500', '#00CED1'];
+    const color = colors[colorIndex];
+    colorIndex = (colorIndex + 1) % colors.length;
+    return color;
+  }
+
+  function addTodoToList(todoText) {
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.style.backgroundColor = getRandomColor();
+
+    const todoTextElement = document.createElement('div');
+    todoTextElement.classList.add('todo-text');
+    todoTextElement.textContent = todoText;
+    card.appendChild(todoTextElement);
+
+    const actionsContainer = document.createElement('div');
+    actionsContainer.classList.add('actions');
+
+    const completeCheckbox = document.createElement('input');
+    completeCheckbox.type = 'checkbox';
+    actionsContainer.appendChild(completeCheckbox);
+
+    const updateBtn = document.createElement('button');
+    updateBtn.textContent = 'Update';
+    updateBtn.classList.add('update-button');
+    actionsContainer.appendChild(updateBtn);
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.classList.add('delete-button');
+    actionsContainer.appendChild(deleteBtn);
+
+    card.appendChild(actionsContainer);
+
+    todoList.appendChild(card);
+  }
+
+  todoForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const todoInput = document.getElementById('todo-input');
+    const todoText = todoInput.value.trim();
+
+    if (todoText !== '') {
+      addTodoToList(todoText);
+      todoInput.value = '';
+    }
+  });
+
+  todoList.addEventListener('click', (event) => {
+    const target = event.target;
+    if (target.classList.contains('update-button')) {
+      const card = target.closest('.card');
+      const todoTextElement = card.querySelector('.todo-text');
+      const updatedText = prompt('Update the todo:', todoTextElement.textContent);
+      if (updatedText !== null) {
+        todoTextElement.textContent = updatedText.trim();
+      }
+    } else if (target.classList.contains('delete-button')) {
+      const card = target.closest('.card');
+      card.remove();
+    }
+  });
+});
+
+
+
+
+
+
+
+
+//**working code below */
+// document.addEventListener('DOMContentLoaded', () => {
+//   const todoList = document.getElementById('todo-list')
+//   const todoForm = document.getElementById('add-todo-form')
+
+//   function addTodoToList(todoText) {
+//     const todoItem = document.createElement('li')
+//     todoItem.innerHTML = todoText;
+
+//     const todoForm = document.createElement('form')
+//     todoForm.classList.add('todo-form')
+
+//     const updateBtn = document.createElement('button')
+//     updateBtn.textContent = 'Update'
+//     updateBtn.classList.add('update-button')
+
+//     updateBtn.addEventListener('click', () => {
+//       updateTodoItem(todoForm, todoItem)
+//     })
+
+//     const deleteBtn = document.createElement('button')
+//     deleteBtn.textContent = 'Delete'
+//     deleteBtn.classList.add('delete-button')
+
+//     deleteBtn.addEventListener('click', () => {
+//       deleteTodoItem(todoItem)
+//     })
+
+//     todoForm.appendChild(updateBtn)
+//     todoForm.appendChild(deleteBtn)
+
+//     todoItem.appendChild(todoForm)
+//     todoList.appendChild(todoItem)
+//   }
+
+//   todoForm.addEventListener('submit', (e) => {
+//     e.preventDefault()
+//     const todoInput = document.getElementById('todo-input')
+//     const todoText = todoInput.value.trim()
+
+//     if (todoText !== '') {
+//       addTodoToList(todoText)
+//       todoInput.value = ''
+//     }
+//   })
+
+//   function updateTodoItem(todoForm, todoItem) {
+//     const updatedText = prompt('Update the todo:', todoItem.innerText)
+//     if (updatedText !== null) {
+//       todoItem.innerText = updatedText.trim()
+//     }
+//   }
+
+//   function deleteTodoItem(todoItem) {
+//     todoItem.remove()
+//   }
+// })
+
+// document.addEventListener('DOMContentLoaded', () => {
+//   const todoList = document.getElementById('todo-list');
+//   const todoForm = document.getElementById('add-todo-form');
+
+//   function addTodoToList(todoText) {
+//     const todoItem = document.createElement('li');
+//     todoItem.innerHTML = todoText;
+
+//     todoItem.addEventListener('contextmenu', (e) => {
+//       e.preventDefault();
+//       alert('Right-click to update the todo item');
+//     });
+
+//     todoItem.addEventListener('click', () => {
+//       toggleTodoCompleted(todoItem);
+//     });
+
+//     todoItem.addEventListener('mouseover', () => {
+//       todoItem.style.color = 'red';
+//     });
+
+//     todoItem.addEventListener('mouseout', () => {
+//       todoItem.style.color = '';
+//     });
+
+//     const deleteBtn = document.createElement('button');
+//     deleteBtn.textContent = 'Delete';
+//     deleteBtn.classList.add('delete-button');
+
+//     deleteBtn.addEventListener('click', () => {
+//       deleteTodoItem(todoItem);
+//     });
+
+//     const updateBtn = document.createElement('button');
+//     updateBtn.textContent = 'Update';
+//     updateBtn.classList.add('update-button');
+
+//     updateBtn.addEventListener('click', () => {
+//       updateTodoItem(todoItem);
+//     });
+
+//     todoItem.appendChild(deleteBtn);
+//     todoItem.appendChild(updateBtn);
+//     todoList.appendChild(todoItem);
+//   }
+
+//   todoForm.addEventListener('submit', (e) => {
+//     e.preventDefault();
+//     const todoInput = document.getElementById('todo-input');
+//     const todoText = todoInput.value.trim();
+
+//     if (todoText !== '') {
+//       addTodoToList(todoText);
+//       todoInput.value = '';
+//     }
+//   });
+
+//   function toggleTodoCompleted(todoItem) {
+//     todoItem.classList.toggle('completed');
+//   }
+
+//   function updateTodoItem(todoItem) {
+//     const updatedText = prompt('Update the todo:', todoItem.innerText);
+//     if (updatedText !== null) {
+//       todoItem.innerText = updatedText.trim();
+//     }
+//   }
+
+//   function deleteTodoItem(todoItem) {
+//     todoItem.remove();
+//   }
+// });
+
+
+/*document.addEventListener('DOMContentLoaded', () => {
   const todoList = document.getElementById('todo-list')
   const todoForm = document.getElementById('add-todo-form')
 
   function addTodoToList(todoText) {
     const todoItem = document.createElement('li')
     todoItem.innerHTML = todoText
+
     //todoItem.addEventListener = todoText
+    todoItem.addEventListener('contextmenu', (e) => {
+      e.preventDefault()
+      alert('Right-click to update the todo item')
+    })
 
     todoItem.addEventListener('click', () => {
       toggleTodoCompleted(todoItem)
@@ -15,6 +230,12 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault()
       updateTodoItem(todoItem)
     })
+
+    todoItem.addEventListener('contextmenu', (e) => {
+      e.preventDefault()
+      alert('Right-click to update the todo item')
+    })
+
 //change the color of the todo listed to red
     todoItem.addEventListener('mouseover', () => {
       todoItem.style.color = 'red'
@@ -24,40 +245,44 @@ document.addEventListener('DOMContentLoaded', () => {
       todoItem.style.color = ''
     })
 
-    todoItem.addEventListener('contextmenu', (e) => {
-      e.preventDefault()
-      alert('Right-click to update the todo item')
+    const deleteBtn = document.createElement('button')
+    deleteBtn.textContent = 'Delete'
+    deleteBtn.classList.add('delete-button')
+
+    deleteBtn.addEventListener('click', () => {
+      deleteTodoItem(todoItem)
     })
 
+    todoItem.appendChild(deleteBtn)
     todoList.appendChild(todoItem)
-
-    //todoText.map((todo) => addTodoToList(todo.text))
-
   }
 
   todoForm.addEventListener('submit', (e) => {
-      e.preventDefault()
-      const todoInput = document.getElementById('todo-input')
-      const todoText = todoInput.value.trim()
+    e.preventDefault();
+    const todoInput = document.getElementById('todo-input')
+    const todoText = todoInput.value.trim()
 
-      if (todoText !== '') {
-          addTodoToList(todoText)
-          todoInput.value = ''
-      }
+    if (todoText !== '') {
+      addTodoToList(todoText)
+      todoInput.value = ''
+    }
   })
 
   function toggleTodoCompleted(todoItem) {
-      todoItem.classList.toggle('completed')
+    todoItem.classList.toggle('completed')
   }
 
   function updateTodoItem(todoItem) {
-      const updatedText = prompt('Update the todo:', todoItem.innerText)
-      if (updatedText !== null) {
-          todoItem.innerText = updatedText.trim()
-      }
+    const updatedText = prompt('Update the todo:', todoItem.innerText)
+    if (updatedText !== null) {
+      todoItem.innerText = updatedText.trim()
+    }
   }
-  //fetchAllTodos()
-})
+
+  function deleteTodoItem(todoItem) {
+    todoItem.remove()
+  }
+})*/
 
 /*async function fetchAllTodos() {
   try {
