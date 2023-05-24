@@ -1,5 +1,6 @@
-Todo List Web Application
-![Todo List App](/images/Screenshot%20(428).png)
+# Todo List Web Application
+
+![Todo List Web App](/images/Screenshot%20(428).png)
 
 This project is a simple web application that allows users to create and manage a list of todos. Users can add new todos, update existing ones, mark them as completed, and delete them. The application provides a user-friendly interface to help users stay organized and keep track of their tasks.
 
@@ -16,14 +17,12 @@ Screenshots
 ![Todo List App](/images/Screenshot%20(427).png)
 ![Todo List App](/images/Screenshot%20(429).png)
 
-
-
 The screenshot above shows the user interface of the Todo List web application. It displays a list of todos with options to update and delete each item. Completed todos are indicated by a checkbox.
 
 Getting Started
 To run the Todo List application locally, follow these steps:
 
-Clone the repository: git clone https://github.com/your-username/todo-list.git
+Clone the repository: git clone <https://github.com/your-username/todo-list.git>
 Open the project folder: cd todo-list
 Open the index.html file in your web browser.
 Contributions

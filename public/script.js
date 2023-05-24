@@ -1,7 +1,11 @@
+/* eslint-disable no-restricted-globals */
 document.addEventListener('DOMContentLoaded', () => {
   const todoList = document.getElementById('todo-list')
   const completedTodosList = document.getElementById('completed-todos')
   const todoForm = document.getElementById('add-todo-form')
+  const showTodosButton = document.getElementById('show-todos-button')
+  const deleteAllButton = document.getElementById('delete-all-button')
+
   let colorIndex = 0
 
   function getRandomColor() {
@@ -20,6 +24,18 @@ document.addEventListener('DOMContentLoaded', () => {
     todoTextElement.classList.add('todo-text')
     todoTextElement.textContent = todoText
     card.appendChild(todoTextElement)
+
+    const dueDateLabel = document.createElement('label')
+    dueDateLabel.textContent = 'Due Date:'
+
+    const dueDateInput = document.createElement('input')
+    dueDateInput.type = 'date'
+
+    const dueDateContainer = document.createElement('div')
+    dueDateContainer.classList.add('due-date')
+    dueDateContainer.appendChild(dueDateLabel)
+    dueDateContainer.appendChild(dueDateInput)
+    card.appendChild(dueDateContainer)
 
     const actionsContainer = document.createElement('div')
     actionsContainer.classList.add('actions')
@@ -62,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateTodoItem(todoItem) {
-    const updatedText = prompt('Update the todo:', todoItem.querySelector('.todo-text').textContent);
+    const updatedText = prompt('Update the todo:', todoItem.querySelector('.todo-text').textContent)
     if (updatedText !== null) {
       todoItem.querySelector('.todo-text').textContent = updatedText.trim()
     }
@@ -71,6 +87,51 @@ document.addEventListener('DOMContentLoaded', () => {
   function deleteTodoItem(todoItem) {
     todoItem.remove()
   }
+
+  function displayTodoList() {
+    todoList.innerHTML = ''
+    completedTodosList.innerHTML = ''
+
+    fetch('http://localhost:4040/todos')
+      .then(response => response.json())
+      .then(todos => {
+        todos.forEach(todo => {
+          const todoItem = createTodoItem(todo.text);
+          todoItem.querySelector('.update-button').addEventListener('click', () => {
+            updateTodoItem(todoItem)
+          })
+          todoItem.querySelector('.delete-button').addEventListener('click', () => {
+            deleteTodoItem(todoItem)
+          })
+
+          if (todo.completed) {
+            completedTodosList.appendChild(todoItem)
+          } else {
+            todoList.appendChild(todoItem)
+          }
+        })
+      })
+      .catch(error => {
+        console.error('Error fetching todo list:', error)
+      })
+  }
+
+  function handleDeleteAll() {
+    const confirmed = confirm('Are you sure you want to delete all todos?')
+    if (confirmed) {
+      todoList.innerHTML = ''
+      completedTodosList.innerHTML = ''
+      console.log('All todos have been deleted.')
+    } else {
+      console.log('Deletion canceled.')
+    }
+  }
+
+  showTodosButton.addEventListener('click', () => {
+    displayTodoList()
+    showTodosButton.style.display = 'none'
+    deleteAllButton.style.display = 'block'
+  })
 
   todoForm.addEventListener('submit', (e) => {
     e.preventDefault()
@@ -87,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const target = event.target
     if (target.classList.contains('update-button')) {
       const card = target.closest('.card')
-      updateTodoItem(card);
+      updateTodoItem(card)
     } else if (target.classList.contains('delete-button')) {
       const card = target.closest('.card')
       deleteTodoItem(card)
@@ -107,7 +168,310 @@ document.addEventListener('DOMContentLoaded', () => {
       deleteTodoItem(card)
     }
   })
+
+  deleteAllButton.addEventListener('click', handleDeleteAll)
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// document.addEventListener('DOMContentLoaded', () => {
+//   const todoList = document.getElementById('todo-list');
+//   const completedTodosList = document.getElementById('completed-todos');
+//   const todoForm = document.getElementById('add-todo-form');
+//   const showTodosButton = document.getElementById('show-todos-button');
+
+//   let colorIndex = 0;
+
+//   function getRandomColor() {
+//     const colors = ['#FFC0CB', '#FFD700', '#00FFFF', '#90EE90', '#EE82EE', '#FFA500', '#00CED1'];
+//     const color = colors[colorIndex];
+//     colorIndex = (colorIndex + 1) % colors.length;
+//     return color;
+//   }
+
+//   function createTodoItem(todoText) {
+//     const card = document.createElement('div');
+//     card.classList.add('card');
+//     card.style.backgroundColor = getRandomColor();
+
+//     const todoTextElement = document.createElement('div');
+//     todoTextElement.classList.add('todo-text');
+//     todoTextElement.textContent = todoText;
+//     card.appendChild(todoTextElement);
+
+//     const actionsContainer = document.createElement('div');
+//     actionsContainer.classList.add('actions');
+
+//     const completeCheckbox = document.createElement('input');
+//     completeCheckbox.type = 'checkbox';
+//     actionsContainer.appendChild(completeCheckbox);
+
+//     const updateBtn = document.createElement('button');
+//     updateBtn.textContent = 'Update';
+//     updateBtn.classList.add('update-button');
+//     actionsContainer.appendChild(updateBtn);
+
+//     const deleteBtn = document.createElement('button');
+//     deleteBtn.textContent = 'Delete';
+//     deleteBtn.classList.add('delete-button');
+//     actionsContainer.appendChild(deleteBtn);
+
+//     card.appendChild(actionsContainer);
+
+//     return card;
+//   }
+
+//   function addTodoToList(todoText) {
+//     const todoItem = createTodoItem(todoText);
+//     todoList.appendChild(todoItem);
+//   }
+
+//   function moveTodoToCompletedList(todoItem) {
+//     const listItem = createTodoItem(todoItem.querySelector('.todo-text').textContent);
+//     listItem.querySelector('.update-button').addEventListener('click', () => {
+//       updateTodoItem(listItem);
+//     });
+//     listItem.querySelector('.delete-button').addEventListener('click', () => {
+//       deleteTodoItem(listItem);
+//     });
+
+//     completedTodosList.appendChild(listItem);
+//     todoItem.remove();
+//   }
+
+//   function updateTodoItem(todoItem) {
+//     const updatedText = prompt('Update the todo:', todoItem.querySelector('.todo-text').textContent);
+//     if (updatedText !== null) {
+//       todoItem.querySelector('.todo-text').textContent = updatedText.trim();
+//     }
+//   }
+
+//   function deleteTodoItem(todoItem) {
+//     todoItem.remove();
+//   }
+
+//   function displayTodoList() {
+//     todoList.innerHTML = '';
+//     completedTodosList.innerHTML = '';
+
+//     fetch('http://localhost:4040/todos')
+//       .then(response => response.json())
+//       .then(todos => {
+//         todos.forEach(todo => {
+//           const todoItem = createTodoItem(todo.text);
+//           todoItem.querySelector('.update-button').addEventListener('click', () => {
+//             updateTodoItem(todoItem);
+//           });
+//           todoItem.querySelector('.delete-button').addEventListener('click', () => {
+//             deleteTodoItem(todoItem);
+//           });
+
+//           if (todo.completed) {
+//             completedTodosList.appendChild(todoItem);
+//           } else {
+//             todoList.appendChild(todoItem);
+//           }
+//         });
+//       })
+//       .catch(error => {
+//         console.error('Error fetching todo list:', error);
+//       });
+//   }
+
+//   showTodosButton.addEventListener('click', displayTodoList);
+
+//   todoForm.addEventListener('submit', (e) => {
+//     e.preventDefault();
+//     const todoInput = document.getElementById('todo-input');
+//     const todoText = todoInput.value.trim();
+
+//     if (todoText !== '') {
+//       addTodoToList(todoText);
+//       todoInput.value = '';
+//     }
+//   });
+
+//   todoList.addEventListener('click', (event) => {
+//     const target = event.target;
+//     if (target.classList.contains('update-button')) {
+//       const card = target.closest('.card');
+//       updateTodoItem(card);
+//     } else if (target.classList.contains('delete-button')) {
+//       const card = target.closest('.card');
+//       deleteTodoItem(card);
+//     } else if (target.type === 'checkbox') {
+//       const card = target.closest('.card');
+//       moveTodoToCompletedList(card);
+//     }
+//   });
+
+//   completedTodosList.addEventListener('click', (event) => {
+//     const target = event.target;
+//     if (target.classList.contains('update-button')) {
+//       const card = target.closest('.card');
+//       updateTodoItem(card);
+//     } else if (target.classList.contains('delete-button')) {
+//       const card = target.closest('.card');
+//       deleteTodoItem(card);
+//     }
+//   });
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**the best working code */
+// document.addEventListener('DOMContentLoaded', () => {
+//   const todoList = document.getElementById('todo-list')
+//   const completedTodosList = document.getElementById('completed-todos')
+//   const todoForm = document.getElementById('add-todo-form')
+//   let colorIndex = 0
+
+//   function getRandomColor() {
+//     const colors = ['#FFC0CB', '#FFD700', '#00FFFF', '#90EE90', '#EE82EE', '#FFA500', '#00CED1']
+//     const color = colors[colorIndex]
+//     colorIndex = (colorIndex + 1) % colors.length
+//     return color
+//   }
+
+//   function createTodoItem(todoText) {
+//     const card = document.createElement('div')
+//     card.classList.add('card')
+//     card.style.backgroundColor = getRandomColor()
+
+//     const todoTextElement = document.createElement('div')
+//     todoTextElement.classList.add('todo-text')
+//     todoTextElement.textContent = todoText
+//     card.appendChild(todoTextElement)
+
+//     const actionsContainer = document.createElement('div')
+//     actionsContainer.classList.add('actions')
+
+//     const completeCheckbox = document.createElement('input')
+//     completeCheckbox.type = 'checkbox'
+//     actionsContainer.appendChild(completeCheckbox)
+
+//     const updateBtn = document.createElement('button')
+//     updateBtn.textContent = 'Update'
+//     updateBtn.classList.add('update-button')
+//     actionsContainer.appendChild(updateBtn)
+
+//     const deleteBtn = document.createElement('button')
+//     deleteBtn.textContent = 'Delete'
+//     deleteBtn.classList.add('delete-button')
+//     actionsContainer.appendChild(deleteBtn)
+
+//     card.appendChild(actionsContainer)
+
+//     return card
+//   }
+
+//   function addTodoToList(todoText) {
+//     const todoItem = createTodoItem(todoText)
+//     todoList.appendChild(todoItem)
+//   }
+
+//   function moveTodoToCompletedList(todoItem) {
+//     const listItem = createTodoItem(todoItem.querySelector('.todo-text').textContent)
+//     listItem.querySelector('.update-button').addEventListener('click', () => {
+//       updateTodoItem(listItem)
+//     })
+//     listItem.querySelector('.delete-button').addEventListener('click', () => {
+//       deleteTodoItem(listItem)
+//     })
+
+//     completedTodosList.appendChild(listItem)
+//     todoItem.remove()
+//   }
+
+//   function updateTodoItem(todoItem) {
+//     const updatedText = prompt('Update the todo:', todoItem.querySelector('.todo-text').textContent);
+//     if (updatedText !== null) {
+//       todoItem.querySelector('.todo-text').textContent = updatedText.trim()
+//     }
+//   }
+
+//   function deleteTodoItem(todoItem) {
+//     todoItem.remove()
+//   }
+
+//   todoForm.addEventListener('submit', (e) => {
+//     e.preventDefault()
+//     const todoInput = document.getElementById('todo-input')
+//     const todoText = todoInput.value.trim()
+
+//     if (todoText !== '') {
+//       addTodoToList(todoText)
+//       todoInput.value = ''
+//     }
+//   })
+
+//   todoList.addEventListener('click', (event) => {
+//     const target = event.target
+//     if (target.classList.contains('update-button')) {
+//       const card = target.closest('.card')
+//       updateTodoItem(card);
+//     } else if (target.classList.contains('delete-button')) {
+//       const card = target.closest('.card')
+//       deleteTodoItem(card)
+//     } else if (target.type === 'checkbox') {
+//       const card = target.closest('.card')
+//       moveTodoToCompletedList(card)
+//     }
+//   })
+
+//   completedTodosList.addEventListener('click', (event) => {
+//     const target = event.target
+//     if (target.classList.contains('update-button')) {
+//       const card = target.closest('.card')
+//       updateTodoItem(card)
+//     } else if (target.classList.contains('delete-button')) {
+//       const card = target.closest('.card')
+//       deleteTodoItem(card)
+//     }
+//   })
+// })
 
 /**Next to final code changes perfect */
 // document.addEventListener('DOMContentLoaded', () => {

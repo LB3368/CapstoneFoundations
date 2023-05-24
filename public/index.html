@@ -15,7 +15,10 @@
     <div class="container">
       <main>
         <section id="todo-list-view">
-          <h2>My Todos</h2>
+          <h1>My Todos</h1>
+          <button id="show-todos-button">Show Todos</button>
+          <button id="delete-all-button" style="display: none">Delete All</button>
+
           <ul id="todo-list"></ul>
         </section>
         <section id="completed-todos-view">
@@ -30,6 +33,8 @@
             <input type="text" id="todo-input" placeholder="Add a new todo" />
             <button id="submit">Add Todo</button>
           </form>
+          <div id="todo-list" class="todo-list"></div>
+          <div id="completed-todos" class="completed-todos"></div>
         </section>
       </main>
     </div>
