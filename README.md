@@ -24,6 +24,7 @@ To run the Todo List application locally, follow these steps:
 
 Clone the repository: git clone <https://github.com/your-username/todo-list.git>
 Open the project folder: cd todo-list
+Run npm server/index.js
 Open the index.html file in your web browser.
 Contributions
 Contributions to this project are welcome. If you find any issues or would like to add new features, please submit a pull request.
