@@ -17,15 +17,72 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
     padding: 20px;
   }
   .card {
+    background-color: #f2f2f2;
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .todo-text {
+    flex-grow: 1;
+    margin-right: 10px;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .update-button,
+  .delete-button {
+    background-color: #f8f8f8;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .update-button {
+    color: #2196f3;
+  }
+  
+  .delete-button {
+    color: #f44336;
+  }
+  
+  #completed-todos-view {
+    margin-top: 30px;
+  }
+
+  .completed-todos-container {
+    margin-top: 20px;
+  }
+  
+  .completed-todos-container h2 {
+    margin-bottom: 10px;
+  }
+  
+  .completed-todos-container ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .completed-todos-container li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  .completed-todos-container .update-button,
+  .completed-todos-container .delete-button {
+    margin-left: 10px;
   }
   
   .card .todo-text {

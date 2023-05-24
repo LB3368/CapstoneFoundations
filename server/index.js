@@ -32,17 +32,17 @@ sequelize
   })
 
 //Define association to sequelize elements
-Todo.belongsTo(Category);
-Category.hasMany(Todo);
+Todo.belongsTo(Category)
+Category.hasMany(Todo)
 
 // Sync models with db
 sequelize.sync().then(async () => {
   console.log("Models are in sync");
 
   //This will seed the db with sample data
-  await Category.sync({ force: false });
-  await Todo.sync({ force: false });
-  await require("./seed");
+  await Category.sync({ force: false })
+  await Todo.sync({ force: false })
+  await require("./seed")
 })
 
 //app.post('/seedDb', seedDb)
@@ -50,30 +50,30 @@ sequelize.sync().then(async () => {
 //Get todos
 app.get('/todos', async (req, res) => {
   try {
-    const todos = await Todo.findAll();
-    res.send(todos);
+    const todos = await Todo.findAll()
+    res.send(todos)
   } catch (error) {
     console.error("Error fetching todos:", error);
-    res.status(500).send({ error: "Failed to fetch todos" });
+    res.status(500).send({ error: "Failed to fetch todos" })
   }
-}); //? can I do this******
+})
 
 app.get('/todos/:id', async (req, res) => {
   const id = parseInt(req.params.id);
   const todo = await Todo.findByPk(id);
   res.send(todo);
-});
+})
 
 //Add new todo
-app.post('/todos', todos.addTodo);
+app.post('/todos', todos.addTodo)
 
 // updating todo
-app.put("/todos/:id", todos.updateTodo);
+app.put("/todos/:id", todos.updateTodo)
 
 // Delete a todo
-app.delete("/todos/:id", todos.deletedTodo);
+app.delete("/todos/:id", todos.deletedTodo)
 
 
 app.listen(SERVER_PORT, () => {
-  console.log(`running on port ${SERVER_PORT}`);
-});
+  console.log(`running on port ${SERVER_PORT}`)
+})
